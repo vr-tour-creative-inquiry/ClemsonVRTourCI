@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Clemson VR Tour Demo</title>
+    <meta name="description" content="Clemson VR Tour Demo">
+    <script src="https://aframe.io/releases/0.8.0/aframe.min.js"></script>
+    <script src="https://npmcdn.com/aframe-animation-component@3.0.1"></script>
+<!--    <script src="https://unpkg.com/aframe-animation-component@^5.1.2/dist/aframe-animation-component.min.js"></script>-->
+    <script src="https://npmcdn.com/aframe-event-set-component@3.0.1"></script>
+    <script src="https://npmcdn.com/aframe-layout-component@3.0.1"></script>
+    <script src="https://npmcdn.com/aframe-template-component@3.1.1"></script>
+    <script src="https://unpkg.com/aframe-look-at-component@0.5.1/dist/aframe-look-at-component.min.js"></script> 
+    <script src="components/set-image.js"></script>
+    <script src="components/play-pause.js"></script>
+    <script src="components/set-objects.js"></script>
+  </head>
+  <body>
+    <a-scene>
+      <a-assets>
+        <img id="city" crossorigin="anonymous" src="https://cdn.aframe.io/360-image-gallery-boilerplate/img/city.jpg">
+        <img id="city-thumb" crossorigin="anonymous" src="https://cdn.aframe.io/360-image-gallery-boilerplate/img/thumb-city.jpg">
+        <img id="cubes-thumb" crossorigin="anonymous" src="https://cdn.aframe.io/360-image-gallery-boilerplate/img/thumb-cubes.jpg">
+        <img id="sechelt-thumb" crossorigin="anonymous" src="https://cdn.aframe.io/360-image-gallery-boilerplate/img/thumb-sechelt.jpg">
+        <audio id="click-sound" crossorigin="anonymous" src="https://cdn.aframe.io/360-image-gallery-boilerplate/audio/click.ogg"></audio>
+        <img id="cubes" crossorigin="anonymous" src="https://cdn.aframe.io/360-image-gallery-boilerplate/img/cubes.jpg">
+        <img id="sechelt" crossorigin="anonymous" src="https://cdn.aframe.io/360-image-gallery-boilerplate/img/sechelt.jpg">
+        <img id="libbridge" src="img/libraryBridge.jpg">
+        <img id="lobby" src="img/lobby.jpg">
+        <img id="grass" src="img/grass.jpg">
+        <img id="culogo" src="img/CUTigersLogo.png">
+        <img id="play" src="img/playbtn.png">
+        <img id="pause" src="img/pause.png">
+        <img id="adobe" src="img/adobe.jpg">
+        <video id="introvideo" src="video/AdmissionsVideo.mp4"></video>
+
+        <!-- Image link template to be reused. -->
+        <script id="link" type="text/html">
+          <a-entity class="link"
+            geometry="primitive: circle; height: 1; width: 1"
+            material="shader: flat; src: ${thumb}; transparent: true"
+            event-set__1="_event: mousedown; scale: 1 1 1"
+            event-set__2="_event: mouseup; scale: 1.2 1.2 1"
+            event-set__3="_event: mouseenter; scale: 1.2 1.2 1"
+            event-set__4="_event: mouseleave; scale: 1 1 1"
+            set-image="on: click; target: #image-360; src: ${src}; objects: ${objs};"
+            sound="on: click; src: #click-sound"
+            look-at="#camera"></a-entity>
+        </script>
+      </a-assets>
+        
+        <!-- 360-degree image. -->
+      <a-sky id="image-360" src="#lobby" set-objects></a-sky>
+        
+        
+      <!-- Lobby Objects -->
+      <a-entity id="lobby-objs" class="objs">
+        <a-entity template="src: #link" data-src="#grass" data-thumb="#grass" data-objs="grass-objs"
+                  position="-3.5 1 4"></a-entity>
+<!--        <a-entity template="src: #link" data-src="#lobby" data-thumb="#lobby" data-objs="lobby-objs" position="-1.25 -1 -4"></a-entity>-->
+        <a-video class="link" src="#introvideo" width="8" height="4.5" 
+            position="11.577696243022737 3.231837297606907 14.668308677029378" play-pause rotation="-9.93923337957349e-17 -144.82917298937977 1.715684626773085"
+            animation__grow="property: scale; startEvents: click; from: 1 1 1; to: 5 5 5; dir: normal; dur: 1500"
+            animation__shrink="property: scale; startEvents: mouseleave; from: 5 5 5; to: 1 1 1; dir: normal; dur: 1500"
+            event-set__1="_event: mouseleave; pause">
+            <a-image id="videoControls" src="#play" position="0 0 0.1" material="alphaTest:0.75"></a-image>
+        </a-video>
+      </a-entity>
+        
+        <!-- Watt Lawn Objects -->
+        <a-entity id="grass-objs" class="objs" rotation="0 -30 0">
+            <a-entity template="src: #link" data-src="#libbridge" data-thumb="#libbridge" data-objs="libbridge-objs" position="0 1 -6"></a-entity>
+            <a-entity template="src: #link" data-src="#lobby" data-thumb="#lobby" data-objs="lobby-objs" position="-5 0.5 6"></a-entity>
+        </a-entity>
+                
+        <!-- Library Objects -->
+        <a-entity id="libbridge-objs" class="objs" rotation="0 45 0">
+            <a-entity template="src: #link" data-src="#grass" data-thumb="#grass" data-objs="grass-objs" position="-5 0 6"></a-entity>
+            <a-entity template="src: #link" data-src="#adobe" data-thumb="#adobe" data-objs="adobe-objs" position="-3 1 -4"></a-entity>
+        </a-entity>
+        
+        <!-- Adobe Objects -->
+        <a-entity id="adobe-objs" class="objs" rotation="0 -60 0">
+            <a-entity template="src: #link" data-src="#libbridge" data-thumb="#libbridge" data-objs="libbridge-objs" position="-5 1 8"></a-entity>
+        </a-entity>
+        
+        <!-- Home Button on Floor -->
+        <a-entity template="src: #link" data-src="#lobby"
+                data-thumb="#culogo"
+               data-objs="lobby-objs"
+                position="0 -1.6 0"
+                rotation="-90 0 0">
+        </a-entity>
+
+      <!-- Camera + cursor. -->
+      <a-entity id="camera" camera look-controls>
+        <a-cursor id="cursor"
+          animation__click="property: scale; startEvents: click; from: 0.1 0.1 0.1; to: 1 1 1; dur: 150"
+          animation__fusing="property: fusing; startEvents: fusing; from: 1 1 1; to: 0.1 0.1 0.1; dur: 1500"
+          event-set__1="_event: mouseenter; color: springgreen"
+          event-set__2="_event: mouseleave; color: black"
+          fuse="true"
+          raycaster="objects: .link"></a-cursor>
+      </a-entity>
+     
+  
+<!--      <a-entity set-objects></a-entity>-->
+    </a-scene>
+  </body>
+</html>
